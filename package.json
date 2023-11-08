@@ -1,0 +1,150 @@
+{
+  "name": "easy-erp-app",
+  "version": "3.3.16",
+  "author": "",
+  "description": "EasyERP build over electron-vue",
+  "license": "null",
+  "main": "./dist/electron/main.js",
+  "scripts": {
+    "build": "node .electron-vue/build.js && electron-builder",
+    "build:production": "set NODE_ENV=production && node .electron-vue/build.js && electron-builder",
+    "build:jenkins": "node .electron-vue/build.js && electron-builder -w",
+    "build:jenkins-production": "export NODE_ENV=production && node .electron-vue/build.js && electron-builder -w --ia32",
+    "build:jenkins-windows": "set NODE_ENV=production && node .electron-vue/build.js && electron-builder -w --ia32",
+    "build:dir": "node .electron-vue/build.js && electron-builder --dir",
+    "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
+    "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
+    "dev": "set NODE_ENV=development && node .electron-vue/dev-runner.js",
+    "pack": "npm run pack:main && npm run pack:renderer",
+    "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
+    "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
+    "package-win": "electron-packager . easy-erp-client --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/Logo_ERD.png --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Easy ERP - Client\"",
+    "package-win-production": "electron-packager . easy-erp-client --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds-production --version-string.CompanyName=CE --version-string.FileDescription=CE --production --version-string.ProductName=\"Easy ERP - Client\"",
+    "postinstall": "",
+    "deploy": "node .electron-vue/build.js && electron-builder build --win --publish always"
+  },
+  "build": {
+    "extraResources": [
+      "./public/**"
+    ],
+    "productName": "easy-erd-aplication",
+    "appId": "com.example.yourapp",
+    "directories": {
+      "output": "build"
+    },
+    "files": [
+      "dist/electron/**/*"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "mac": {
+      "icon": "build/icons/logo-1.png"
+    },
+    "win": {
+      "icon": "build/icons/logo-1.png"
+    },
+    "linux": {
+      "icon": "build/icons/logo-1.png"
+    }
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.1",
+    "@fortawesome/fontawesome-svg-core": "^1.2.26",
+    "@fortawesome/free-solid-svg-icons": "^5.12.0",
+    "@trevoreyre/autocomplete-vue": "^2.2.0",
+    "admin-lte": "^3.0.2",
+    "axios": "^0.18.0",
+    "bootstrap": "^4.4.1",
+    "buble": "^0.20.0",
+    "electron-fetch": "^1.4.0",
+    "electron-packager": "^14.2.1",
+    "electron-pdf-window": "^1.0.12",
+    "electron-printer": "0.0.5",
+    "electron-root-path": "^1.0.16",
+    "electron-updater": "^4.3.9",
+    "eslint": "^7.13.0",
+    "export-from-json": "^1.4.0",
+    "file-saver": "^2.0.2",
+    "inputmask": "^5.0.3",
+    "jquery": "^3.5.1",
+    "laravel-echo": "^1.11.7",
+    "mdbootstrap": "^4.12.0",
+    "node-fetch": "^2.6.1",
+    "node-gyp": "^7.1.2",
+    "node-pdf-printer": "^1.1.4",
+    "numeral": "^2.0.6",
+    "pdf-to-printer": "^1.3.2",
+    "popper": "^1.0.1",
+    "popper.js": "^1.16.1",
+    "pusher-js": "^7.1.0-beta",
+    "tempusdominus-core": "^5.0.3",
+    "v-select2-component": "^0.4.7",
+    "vue": "^2.5.16",
+    "vue-awesome-notifications": "^3.1.0",
+    "vue-devtools": "^5.1.4",
+    "vue-electron": "^1.0.6",
+    "vue-loading-overlay": "^3.2.0",
+    "vue-multiselect": "^2.1.6",
+    "vue-router": "^3.0.1",
+    "vue2-datepicker": "^3.3.1",
+    "vuedraggable": "^2.24.3",
+    "vuex": "^3.0.1",
+    "vuex-electron": "^1.0.0"
+  },
+  "devDependencies": {
+    "ajv": "^6.5.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-minify-webpack-plugin": "^0.3.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "cfonts": "^2.1.2",
+    "chalk": "^2.4.1",
+    "copy-webpack-plugin": "^4.5.1",
+    "cross-env": "^5.1.6",
+    "css-loader": "^0.28.11",
+    "del": "^3.0.0",
+    "electron": "^13.1.7",
+    "devtron": "^1.4.0",
+    "electron-builder": "^20.44.4",
+    "electron-debug": "^1.5.0",
+    "electron-devtools-installer": "^2.2.4",
+    "file-loader": "^1.1.11",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "0.4.0",
+    "multispinner": "^0.2.1",
+    "node-loader": "^0.6.0",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^7.0.3",
+    "style-loader": "^0.21.0",
+    "url-loader": "^1.0.1",
+    "vue-html-loader": "^1.2.4",
+    "vue-loader": "^15.2.4",
+    "vue-style-loader": "^4.1.0",
+    "vue-template-compiler": "^2.5.16",
+    "webpack": "^4.15.1",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-hot-middleware": "^2.22.2",
+    "webpack-merge": "^4.1.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/klys/easyerp3-frontend.git"
+  }
+}

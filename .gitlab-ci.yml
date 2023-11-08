@@ -1,0 +1,28 @@
+variables:
+  VERSION_ID: '2.0.$CI_PIPELINE_ID'
+  GIT_CLONE_PATH: $CI_BUILDS_DIR/easyerp-app
+
+stages:
+  - build
+
+cache:
+  paths:
+    - node_modules/
+    - vendor/
+
+building:
+  stage: build
+  artifacts:
+    paths:
+      - /var/www/gitlab/apps/easyerp-app/build/*.*
+
+  script:
+    - sed "s/0.0.0/${VERSION_ID}/g" package.json > _package.json && mv _package.json package.json
+
+    # Install
+    - npm install
+
+    # Build
+    - npm run build:jenkins-production
+  tags:
+    - easyerp
