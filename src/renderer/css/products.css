@@ -1,0 +1,24 @@
+.product-bg{
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--secondary-dark);
+}
+.title-card{
+  background-color: var(--secondary);
+  color: #fff;
+}
+.product-img{
+  width: 140px;
+  height: 140px;
+  border-radius: 3px;
+}
+.pa-12{
+  padding: 12px !important;
+}
+.color-money{
+  color: #0B4F6C !important;
+}
+.categories-list{
+  max-height: 400px;
+  overflow-y: auto;
+}

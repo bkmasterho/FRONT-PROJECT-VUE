@@ -1,0 +1,19 @@
+html, body {
+  height: 100%!important;
+}
+
+#app {
+  height: 100%!important;
+}
+
+.sidebar-mini {
+  height: 100%!important;
+}
+
+.content-wrapper {
+  height: 100%!important;
+}
+
+.main-container {
+  height: 100%!important;
+}

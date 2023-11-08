@@ -1,0 +1,49 @@
+.landing-bg{
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(220,220,220,.7);
+}
+.landing-bg .logo{
+  color: var(--primary);
+  font-size: 42px;
+}
+.landing-bg .logo .logo-sub{
+  color: var(--secondary);
+}
+.landing-bg .logo-text{
+  color: lightslategray ;
+  font-size: 24px;
+}
+.landing-bg .logo-text::after{
+  display: block;
+  content: '';
+  padding-top: 15px;
+  transform: scaleX(0.75);
+  border-bottom: 2px solid #0B4F6C;
+}
+.landing-bg .card{
+  width: 400px;
+  -webkit-box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.1);
+  background-color: #F4F1DE;
+}
+.landing-bg .card .btn-serial{
+  background-color: #0B4F6C;
+  color: #ffffff;
+}
+.landing-bg .card .btn-serial:hover{
+  background-color: #292F36;
+  color: #fff;
+}
+.landing-bg .info-card{
+  width: 500px;
+  -webkit-box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.1);
+  background-color: #F4F1DE;
+}
+.landing-bg .info-card .cloud-icon{
+  font-size: 90px;
+  color: #6CCFF6;
+}

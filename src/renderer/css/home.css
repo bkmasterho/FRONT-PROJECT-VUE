@@ -1,0 +1,44 @@
+.home_logo{
+  width: 100%;
+  max-width: 290px;
+  padding: 20px 10px;
+}
+.bg-home{
+  background-color: var(--secondary-dark);
+  min-height: 100vh;
+}
+.bg-parallax-home{
+  /* background-image: url('../assets/fast_sell.jpg'); */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100%;
+  transition: 4s all ease;
+}
+.bg-full-height{
+  min-height: 100vh !important;
+}
+.bg-full-height div{
+  /* background: rgba(0,0,0,.8); */
+  min-height: 100vh !important;
+}
+.rgbaBlack{
+  transition: 4s all ease;
+  /* background: rgba(0,0,0,.7); */
+  /* min-height: 100vh; */
+}
+.text-bienvenida{
+  width: 100%;
+  max-width: 650px;
+  padding: 10px;
+  text-align: center;
+  color: #000;
+  text-decoration: none;
+  text-decoration-style: dashed;
+}
+@media (max-width: 600px) {
+  .text-bienvenida{
+    font-size: 25px;
+  }
+}
