@@ -240,32 +240,24 @@ export default {
         items:[],
         rows:[
 
-          {key:'user_id', class:'', permission:'default'},
-          {key:'product_id', class:'', permission:'default'},
+          {key:'created_at', class:'', permission:'default'},
+          {key:'fullname', class:'', permission:'default'},
+          {key:'name', class:'', permission:'default'},
           {key:'type', class:'', permission:'default'},
-          {key:'price_venta_old', class:'', permission:'default'},
-          {key:'price_venta_new', class:'', permission:'default'},
-          {key:'price_compra_old', class:'', permission:'default'},
-          {key:'price_compra_new', class:'', permission:'default'},
-          {key:'ganancia_old', class:'', permission:'default'},
-          {key:'ganancia_new', class:'', permission:'default'},
           {key:'stock_old', class:'', permission:'default'},
           {key:'stock_new', class:'', permission:'default'},
+          {key:'namecategory', class:'', permission:'default'},
           
         ],
 
         titles:[
-          {label:'UsuarioId', class:'', permission:'default', type:'false', orderBy: false},
-          {label:'ProductoId', class:'', permission:'default', type:'false', orderBy: false},
-          {label:'TypeAccion', class:'', permission:'default', type:'false', orderBy: false},
-          {label:'PrecioV Anterior', class:'', permission:'default', type:'false', orderBy: false},
-          {label:'PrecioV Nuevo', class:'', permission:'default', type:'false', orderBy: false},
-          {label:'PrecioC Anterior', class:'', permission:'default', type:'false', orderBy: false},
-          {label:'PrecioC Nuevo', class:'', permission:'default', type:'false', orderBy: false},
-          {label:'Ganancia Anterior', class:'', permission:'default', type:'false', orderBy: false},
-          {label:'Gananacia Nueva', class:'', permission:'default', type:'false', orderBy: false},
+          {label:'Hora de la edicion', class:'', permission:'default', type:'false', orderBy: false},
+          {label:'Nombre del mesero', class:'', permission:'default', type:'false', orderBy: false},
+          {label:'Nombre del producto', class:'', permission:'default', type:'false', orderBy: false},
+          {label:'Tipo de cambio', class:'', permission:'default', type:'false', orderBy: false},
           {label:'Stock Anterior', class:'', permission:'default', type:'false', orderBy: false},
           {label:'Stock Nuevo', class:'', permission:'default', type:'false', orderBy: false},
+          {label:'Categoria', class:'', permission:'default', type:'false', orderBy: false},
         ]
       }
     }
