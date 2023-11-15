@@ -428,6 +428,10 @@ export default {
 
       if(this.total >= 3862000) this.openVerify(thing); // si la boleta es posiblemente erronea debido a su precio exageradamente alto
       else{
+
+        console.log("INFO ENVIADA A LA NUEVA FACTURA", data);
+        console.log("TYPE_SELL ENVIADA", this.type_sell);
+
         // Iniciando peticion
         Loader.fullPage();
         var request = await this.$store.dispatch("sells/newSell", thing);

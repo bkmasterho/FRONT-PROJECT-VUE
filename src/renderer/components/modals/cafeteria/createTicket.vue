@@ -22,7 +22,7 @@
         <div class="modal-footer">
           <!-- <button type="button" class="btn bg-secundario text-white" @click="backCatalog()">Volver</button> -->
 
-          <button v-if="!this.value.order && ticket_sell && settingBoletaLocal" type="button" class="btn bg-primario text-white" @click="createTicketSell('boleta_local')">Ticket + boleta local</button>
+          <button v-if="!this.value.order && ticket_sell && settingBoletaLocal" type="button" class="btn bg-primario text-white" @click="createTicketSell('boleta_local')">Ticket + boleta local3</button>
           <button v-if="!this.value.order && ticket_sell && settingBoleta" type="button" class="btn bg-dark text-white" @click="createTicketSell('boleta')">Ticket + boleta</button>
           <button v-if="!this.value.order && ticket_sell && settingFactura" type="button" class="btn bg-secundario text-white" @click="createTicketSell('factura')">Ticket + factura</button>
           <button v-if="!this.value.order && ticket_sell_close" type="button" class="btn bg-primario text-white" @click="viewTicket('ticket_venta')">
@@ -83,13 +83,14 @@ export default {
 
       // Datos basicos
       console.log('createTicket ======', this.value);
-      console.log('createTicket ======', onlyTicket);
+      console.log('createTicket ======', this.type_sell);
       let data = { //PD: maravillas del state less UwU
         products: JSON.stringify(this.value.products),
         total: this.deFormatNumber(this.value.total, false),
         gananciaTotal: (this.gananciaInstalled) ? this.deFormatNumber(this.value.gananciaTotal,false) : 0,
         waiter_id: this.value.waiter_id,
-        board_id: this.value.board_id
+        board_id: this.value.board_id,
+        paymode: this.type_sell
       };
 
       if (this.ticket_description) {      
@@ -114,13 +115,23 @@ export default {
           data.phone = (this.clientsPhone) ? client.phone : '';
         }
       }
+
+      console.log("DATA QUE MANDO AL BACKEND CREARTICKET", data);
       var thing = new FormData();
       for (let key in data) if (data[key]) thing.append(key, data[key]);
 
+
       Loader.fullPage();
       // Iniciando peticion
-      if(this.value.order) var request = await this.$store.dispatch("sells/editTicket", {data: thing, id: this.value.order.id});
-      else var request = await this.$store.dispatch("sells/newTicket", thing);
+
+      //Si es debito mando la data a otro endpoint
+      if(this.type_sell=='debito'||this.type_sell=='transferencia'||this.type_sell=='multicaja'||this.type_sell=='edenred'){
+        var request = await this.$store.dispatch("sells/newSell", thing);
+      }else{
+        if(this.value.order) var request = await this.$store.dispatch("sells/editTicket", {data: thing, id: this.value.order.id});
+        else var request = await this.$store.dispatch("sells/newTicket", thing);
+      }
+
       Loader.hide();
 
       // Verificando respuesta
@@ -149,9 +160,13 @@ export default {
           }
         }
       }
+
+
+
       this.$emit('closeModal', true);
     },
 
+    
     formatNumber(number){
       return FormatNumber.format(number);
     },
@@ -212,6 +227,10 @@ export default {
     settingFactura:{ get(){
       if (!ConfigHelper.ConfStr('modulos.ventas.submodulos.sii')) return false;
       return ConfigHelper.ConfStr('modulos.ventas.submodulos.sii.ajustes.factura');
+    } },
+    settingDebito:{ get(){
+      if (!ConfigHelper.ConfStr('modulos.ventas.submodulos.sii')) return false;
+      return ConfigHelper.ConfStr('modulos.ventas.submodulos.sii.ajustes.debito');
     } },
     ticket_sell:{ get(){ return ConfigHelper.ConfStr('modulos.cafeteria.ajustes.ticket_sell'); } },
     ticket_sell_client:{ get(){ return ConfigHelper.ConfStr('modulos.cafeteria.ajustes.ticket_sell_client'); } },
