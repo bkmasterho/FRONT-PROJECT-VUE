@@ -104,15 +104,15 @@
               Ticket + Debito
             </button>
 
-            <button v-if="settingDebito" @click="viewTicket('transferencia')" type="button" class="btn bg-primario text-white">
+            <button v-if="settingTransferencia" @click="viewTicket('transferencia')" type="button" class="btn bg-primario text-white">
               Ticket + Transferencia
             </button>
 
-            <button v-if="settingDebito" @click="viewTicket('multicaja')" type="button" class="btn bg-primario text-white">
+            <button v-if="settingBoletaLocal" @click="viewTicket('multicaja')" type="button" class="btn bg-primario text-white">
               Ticket + Rappi
             </button>
 
-            <button v-if="settingDebito" @click="viewTicket('edenred')" type="button" class="btn bg-primario text-white">
+            <button v-if="settingBoletaLocal" @click="viewTicket('edenred')" type="button" class="btn bg-primario text-white">
               Ticket + Credito
             </button>
 
@@ -717,6 +717,12 @@ export default {
       if (!ConfigHelper.ConfStr('modulos.ventas.submodulos.sii')) return false;
       return ConfigHelper.ConfStr('modulos.ventas.submodulos.sii.ajustes.debito');
     } },
+
+    settingTransferencia:{ get(){
+      if (!ConfigHelper.ConfStr('modulos.ventas.submodulos.sii')) return false;
+      return ConfigHelper.ConfStr('modulos.ventas.submodulos.sii.ajustes.transferencia');
+    } },
+
 
 
     filteredList:{

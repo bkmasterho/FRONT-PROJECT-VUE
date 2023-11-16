@@ -50,6 +50,7 @@ export default {
   data(){
     return{
       type_sell: null,
+      other_type: null,
       jsonTable: {
         btn: false,
         items: null,
@@ -70,7 +71,7 @@ export default {
   },
   methods:{
     createTicketSell(type_sell = null){
-      console.log('createTicketSell '+type_sell);
+      console.log('MOSTRANDOOOO TYPE SELL',type_sell);
       if(this.ticket_sell){
         this.type_sell = type_sell;
         if(this.clientsInstaller && type_sell == 'factura') $('#clientCreate1').modal('show');
@@ -82,8 +83,8 @@ export default {
       $('#clientCreate1').modal('hide');
 
       // Datos basicos
-      console.log('createTicket ======', this.value);
-      console.log('createTicket ======', this.type_sell);
+      console.log('createTicket ======1', this.value);
+      console.log('createTicket ======2', this.type_sell);
       let data = { //PD: maravillas del state less UwU
         products: JSON.stringify(this.value.products),
         total: this.deFormatNumber(this.value.total, false),
@@ -116,17 +117,73 @@ export default {
         }
       }
 
-      console.log("DATA QUE MANDO AL BACKEND CREARTICKET", data);
       var thing = new FormData();
+      
+    
+      if(
+        this.type_sell != 'boleta_local' 
+          && this.type_sell != 'amipass' 
+          && this.type_sell != 'multicaja' 
+          && this.type_sell != 'edenred' 
+          && this.type_sell != 'boleta' 
+          && this.type_sell != 'factura'
+          && this.type_sell != 'convenio_empresa'
+          && this.type_sell != 'ticket_venta'
+          && this.type_sell != 'factura'
+          && this.type_sell != 'ticket'
+          && this.type_sell != null
+        
+        ){
+            this.other_type=this.type_sell
+            data.type_sell='other'
+            this.type_sell='other';
+        }
+      
+      
       for (let key in data) if (data[key]) thing.append(key, data[key]);
 
+      
+      if(this.other_type != null && this.other_type != ''){
+        if( this.type_sell != 'boleta_local' 
+          && this.type_sell != 'amipass' 
+          && this.type_sell != 'multicaja' 
+          && this.type_sell != 'edenred' 
+          && this.type_sell != 'boleta' 
+          && this.type_sell != 'factura'
+          && this.type_sell != 'convenio_empresa'
+          && this.type_sell != 'ticket_venta'
+          && this.type_sell != 'factura'
+          && this.type_sell != 'ticket'
+          && this.type_sell != null){
+        
+          thing.append('typeSell', this.type_sell);
+          thing.append('other_type', this.other_type);
+        } 
+      }
 
+      if (this.type_sell == 'amipass') {
+        thing.set('other_type', 'amipass');
+      }
+
+      if (this.type_sell == 'multicaja') {
+        thing.set('other_type', 'multicaja');
+      }
+
+      if (this.type_sell == 'edenred') {
+        thing.set('other_type', 'edenred');
+      }
+
+      if (this.type_sell == 'convenio_empresa') {
+        thing.set('other_type', 'convenio_empresa');
+      }
+      
       Loader.fullPage();
       // Iniciando peticion
-
+      
       //Si es debito mando la data a otro endpoint
-      if(this.type_sell=='debito'||this.type_sell=='transferencia'||this.type_sell=='multicaja'||this.type_sell=='edenred'){
+      if(this.type_sell=='other'||this.type_sell=='transferencia'||this.type_sell=='multicaja'||this.type_sell=='edenred'){
         var request = await this.$store.dispatch("sells/newSell", thing);
+        console.log("RESPUESTA DE LA APIII CREARTICKET",request);
       }else{
         if(this.value.order) var request = await this.$store.dispatch("sells/editTicket", {data: thing, id: this.value.order.id});
         else var request = await this.$store.dispatch("sells/newTicket", thing);
@@ -145,7 +202,14 @@ export default {
         this.sell_total = this.value.total;
       }
       this.$awn.success("Orden creada exitosamente",{labels:{success:'CORRECTO'}});
-      var ticket = await Print.printBase64(request.data.ticket);
+
+      if(request.data.response_folio){
+        console.log('Ejecutando impresion...');
+        var ticket = await Print.printBase64(request.data.response_folio);
+      }else if(request.data.ticket){
+        var ticket = await Print.printBase64(request.data.ticket);
+      }
+      
 
       if(request.data.order){
         if(request.data.order.response_folio && request.data.order.response_folio == 'boleta' || request.data.order.response_folio == 'factura') {
@@ -231,6 +295,11 @@ export default {
     settingDebito:{ get(){
       if (!ConfigHelper.ConfStr('modulos.ventas.submodulos.sii')) return false;
       return ConfigHelper.ConfStr('modulos.ventas.submodulos.sii.ajustes.debito');
+    } },
+
+    settingTransferencia:{ get(){
+      if (!ConfigHelper.ConfStr('modulos.ventas.submodulos.sii')) return false;
+      return ConfigHelper.ConfStr('modulos.ventas.submodulos.sii.ajustes.transferencia');
     } },
     ticket_sell:{ get(){ return ConfigHelper.ConfStr('modulos.cafeteria.ajustes.ticket_sell'); } },
     ticket_sell_client:{ get(){ return ConfigHelper.ConfStr('modulos.cafeteria.ajustes.ticket_sell_client'); } },

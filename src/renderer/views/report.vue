@@ -488,8 +488,8 @@ console.log("turno",data)
 
             if(this.settingDebito) this.listCounter.push( ['Debito', '$'+this.formatNumber(String(request.debito))]);
             if (this.settingDebito) this.listCounter.push(['Amipass', '$'+this.formatNumber(String(request.amipass))]);
-            if (this.settingDebito) this.listCounter.push(['Multicaja', '$'+this.formatNumber(String(request.multicaja))]);
-            if (this.settingDebito) this.listCounter.push(['Edenred', '$'+this.formatNumber(String(request.edenred))]);
+            if (this.settingDebito) this.listCounter.push(['Rappi', '$'+this.formatNumber(String(request.multicaja))]);
+            if (this.settingDebito) this.listCounter.push(['Credito', '$'+this.formatNumber(String(request.edenred))]);
             if (this.settingDebito) this.listCounter.push(['Convenio Empresa', '$'+this.formatNumber(String(request.convenio_empresa))]);
             if(this.settingTransferencia) this.listCounter.push( ['Transferencia', '$'+this.formatNumber(String(request.transferencia))]);
             if(this.settingCheque) this.listCounter.push( ['Cheque', '$'+this.formatNumber(String(request.cheque))]);
