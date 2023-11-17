@@ -167,8 +167,8 @@ export default {
         {key:'fastSell',label:'Ventas rapidas', value:true},
         {key:'noSii',label:'No SII', value:true},
         {key:'amipass',label:'Amipass', value:true},
-        {key:'edenred',label:'Edenred', value:true},
-        {key:'multicaja',label:'Multicaja', value:true},
+        {key:'credito',label:'Credito', value:true},
+        {key:'rappi',label:'Rappi', value:true},
         {key:'convenio_empresa',label:'Convenio Empresa', value:true}
       ]
     }
@@ -488,8 +488,8 @@ console.log("turno",data)
 
             if(this.settingDebito) this.listCounter.push( ['Debito', '$'+this.formatNumber(String(request.debito))]);
             if (this.settingDebito) this.listCounter.push(['Amipass', '$'+this.formatNumber(String(request.amipass))]);
-            if (this.settingDebito) this.listCounter.push(['Rappi', '$'+this.formatNumber(String(request.multicaja))]);
-            if (this.settingDebito) this.listCounter.push(['Credito', '$'+this.formatNumber(String(request.edenred))]);
+            if (this.settingDebito) this.listCounter.push(['Rappi', '$'+this.formatNumber(String(request.rappi))]);
+            if (this.settingDebito) this.listCounter.push(['Credito', '$'+this.formatNumber(String(request.credito))]);
             if (this.settingDebito) this.listCounter.push(['Convenio Empresa', '$'+this.formatNumber(String(request.convenio_empresa))]);
             if(this.settingTransferencia) this.listCounter.push( ['Transferencia', '$'+this.formatNumber(String(request.transferencia))]);
             if(this.settingCheque) this.listCounter.push( ['Cheque', '$'+this.formatNumber(String(request.cheque))]);
