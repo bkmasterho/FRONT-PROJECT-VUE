@@ -138,6 +138,12 @@ export default {
             data.type_sell='other'
             this.type_sell='other';
         }
+        
+        /*
+        if(this.type_sell == 'multicaja'||this.type_sell == 'other'||this.type_sell == 'edenred'||this.type_sell == 'transferencia'){
+          delete data.ticket
+        }
+        */
       
       
       for (let key in data) if (data[key]) thing.append(key, data[key]);
@@ -182,14 +188,10 @@ export default {
       
       //Si es debito mando la data a otro endpoint
       if(this.type_sell=='other' ||this.type_sell=='transferencia' ||this.type_sell=='multicaja' ||this.type_sell=='edenred'){
-        var request = await this.$store.dispatch("sells/newSell", thing);
-        
-        var request2 = await this.$store.dispatch("sells/newTicket", thing);
-      
-
+        var request = await this.$store.dispatch("sells/newTicket", thing);
         console.log("RESPUESTA DE LA APIII CREARTICKET",request);
-        console.log("RESPUESTA DE LA APIII CREARTICKET request2",request2);
       }else{
+
         if(this.value.order) var request = await this.$store.dispatch("sells/editTicket", {data: thing, id: this.value.order.id});
         else var request = await this.$store.dispatch("sells/newTicket", thing);
       }
@@ -208,19 +210,9 @@ export default {
       }
       this.$awn.success("Orden creada exitosamente",{labels:{success:'CORRECTO'}});
 
-      if(request.data.response_folio && request2.data.ticket){
-        console.log('Ejecutando impresion...');
-        var ticket1 = await Print.printBase64(request.data.response_folio);
-
-        setTimeout( async () => {
-          var ticket = await Print.printBase64(request2.data.ticket);
-        },2000)
-        
-      }else if(request.data.ticket){
-        var ticket = await Print.printBase64(request.data.ticket);
-      }
-      
-
+  
+      var ticket = await Print.printBase64(request.data.ticket);
+    
       if(request.data.order){
         if(request.data.order.response_folio && request.data.order.response_folio == 'boleta' || request.data.order.response_folio == 'factura') {
           this.$awn.info('El ajuste de '+ request.data.order.response_folio +' se encuentra desactivado');
