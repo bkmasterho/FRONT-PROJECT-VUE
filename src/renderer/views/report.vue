@@ -658,7 +658,7 @@ console.log("turno",data)
           request.map((expense)=>{
             myList.push([
               expense.name,
-              '$' + this.formatNumber(this.deFormatNumber(String(expense.balance)))
+              '$' + this.formatNumber(String(expense.balance))
             ]);
           });
           return myList;
