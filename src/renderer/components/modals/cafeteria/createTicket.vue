@@ -123,8 +123,8 @@ export default {
       if(
         this.type_sell != 'boleta_local' 
           && this.type_sell != 'amipass' 
-          && this.type_sell != 'multicaja' 
-          && this.type_sell != 'edenred' 
+          && this.type_sell != 'rappi' 
+          && this.type_sell != 'credito' 
           && this.type_sell != 'boleta' 
           && this.type_sell != 'factura'
           && this.type_sell != 'convenio_empresa'
@@ -138,13 +138,6 @@ export default {
             data.type_sell='other'
             this.type_sell='other';
         }
-        
-        /*
-        if(this.type_sell == 'multicaja'||this.type_sell == 'other'||this.type_sell == 'edenred'||this.type_sell == 'transferencia'){
-          delete data.ticket
-        }
-        */
-      
       
       for (let key in data) if (data[key]) thing.append(key, data[key]);
 
@@ -152,8 +145,8 @@ export default {
       if(this.other_type != null && this.other_type != ''){
         if( this.type_sell != 'boleta_local' 
           && this.type_sell != 'amipass' 
-          && this.type_sell != 'multicaja' 
-          && this.type_sell != 'edenred' 
+          && this.type_sell != 'rappi' 
+          && this.type_sell != 'credito' 
           && this.type_sell != 'boleta' 
           && this.type_sell != 'factura'
           && this.type_sell != 'convenio_empresa'
@@ -171,12 +164,12 @@ export default {
         thing.set('other_type', 'amipass');
       }
 
-      if (this.type_sell == 'multicaja') {
-        thing.set('other_type', 'multicaja');
+      if (this.type_sell == 'rappi') {
+        thing.set('other_type', 'rappi');
       }
 
-      if (this.type_sell == 'edenred') {
-        thing.set('other_type', 'edenred');
+      if (this.type_sell == 'credito') {
+        thing.set('other_type', 'credito');
       }
 
       if (this.type_sell == 'convenio_empresa') {
@@ -187,7 +180,7 @@ export default {
       // Iniciando peticion
       
       //Si es debito mando la data a otro endpoint
-      if(this.type_sell=='other' ||this.type_sell=='transferencia' ||this.type_sell=='multicaja' ||this.type_sell=='edenred'){
+      if(this.type_sell=='other' ||this.type_sell=='transferencia' ||this.type_sell=='rappi' ||this.type_sell=='credito'){
         var request = await this.$store.dispatch("sells/newTicket", thing);
         console.log("RESPUESTA DE LA APIII CREARTICKET",request);
       }else{

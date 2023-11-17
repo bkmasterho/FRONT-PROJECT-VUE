@@ -108,11 +108,11 @@
               Ticket + Transferencia
             </button>
 
-            <button v-if="settingBoletaLocal" @click="viewTicket('multicaja')" type="button" class="btn bg-primario text-white">
+            <button v-if="settingBoletaLocal" @click="viewTicket('rappi')" type="button" class="btn bg-primario text-white">
               Ticket + Rappi
             </button>
 
-            <button v-if="settingBoletaLocal" @click="viewTicket('edenred')" type="button" class="btn bg-primario text-white">
+            <button v-if="settingBoletaLocal" @click="viewTicket('credito')" type="button" class="btn bg-primario text-white">
               Ticket + Credito
             </button>
 
