@@ -85,37 +85,33 @@
         <template>
           <span v-if="!ver_ticket" class="m-0 p-0">
             <button v-if="ticket_sell && settingBoletaLocal" type="button" class="btn bg-primario text-white" @click="viewTicket('boleta_local')">
-              Ticket + boleta local
+              Ticket + Efectivo
+            </button>
+            <button v-if="ticket_sell && settingBoleta" type="button" class="btn bg-dark text-white" @click="viewTicket('boleta')">
+              Ticket + boleta (SII)
+            </button>
+            <button v-if="settingDebito" @click="viewTicket('debito')" type="button" class="btn bg-primario text-white">
+              Ticket + Debito
+            </button>
+            <button v-if="settingTransferencia" @click="viewTicket('transferencia')" type="button" class="btn bg-primario text-white">
+              Ticket + Transferencia
+            </button>
+            <button v-if="settingBoletaLocal" @click="viewTicket('rappi')" type="button" class="btn bg-primario text-white">
+              Ticket + Rappi
+            </button>
+            <button v-if="settingBoletaLocal" @click="viewTicket('credito')" type="button" class="btn bg-primario text-white">
+              Ticket + Credito
             </button>
             <button v-if="ticket_sell_close" type="button" class="btn bg-primario text-white" @click="viewTicket('ticket_venta')">
               Ticket + Cerrar venta
             </button>
-            <button v-if="ticket_sell && settingBoleta" type="button" class="btn bg-dark text-white" @click="viewTicket('boleta')">
-              Ticket + boleta 
-            </button>
+
             <button v-if="ticket_sell && settingFactura" type="button" class="btn bg-secundario text-white" @click="viewTicket('factura')">
               Ticket + factura
             </button>
             <button type="button" class="btn bg-primario text-white" @click="viewTicket('ticket')">
               Crear ticket
             </button>
-
-            <button v-if="settingDebito" @click="viewTicket('debito')" type="button" class="btn bg-primario text-white">
-              Ticket + Debito
-            </button>
-
-            <button v-if="settingTransferencia" @click="viewTicket('transferencia')" type="button" class="btn bg-primario text-white">
-              Ticket + Transferencia
-            </button>
-
-            <button v-if="settingBoletaLocal" @click="viewTicket('rappi')" type="button" class="btn bg-primario text-white">
-              Ticket + Rappi
-            </button>
-
-            <button v-if="settingBoletaLocal" @click="viewTicket('credito')" type="button" class="btn bg-primario text-white">
-              Ticket + Credito
-            </button>
-
 
 
           </span>
