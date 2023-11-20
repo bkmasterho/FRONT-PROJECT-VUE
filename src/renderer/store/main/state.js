@@ -13,7 +13,7 @@ export default {
   permisos: null,
   clients: [],
   detailSells: [],
-  versionNumber: '4.8 10/10/2023 PDF FIX',
+  versionNumber: '5.2 20/11/2023',
   feeds: null,
   pusherEnv: 'prod', // "dev" OR "prod"
 }
