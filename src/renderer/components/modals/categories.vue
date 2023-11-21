@@ -21,6 +21,12 @@
                 <button type="button" class="btn bg-danger text-white px-1 py-1 text-sm q-btn-sm" :disabled="waitResponse" @click="deleteCategory(category.id)">
                   <i class="fa fa-trash"></i>
                 </button>
+                <button v-if="category.status == 1" type="button" class="btn bg-dark text-white px-1 py-1 text-sm q-btn-sm" :disabled="waitResponse" @click="showCategory(category.id)">
+                  <i class="fa fa-eye"></i>
+                </button>
+                <button v-else type="button" class="btn bg-dark text-white px-1 py-1 text-sm q-btn-sm" :disabled="waitResponse" @click="hideCategory(category.id)">
+                  <i class="fa fa-eye-slash"></i>
+                </button>
               </div>
             </li>
           </ul>
@@ -39,6 +45,7 @@
 <script>
 import $ from 'jquery';
 import categoriesCrud from '@/components/modals/crudCategories.vue';
+import Loader from '@/helpers/Loader';
 export default {
   components:{
     categoriesCrud
@@ -68,6 +75,38 @@ export default {
         this.$awn.alert('Error en el servidor');
       }
       this.waitResponse = false;
+    },
+    async hideCategory(id){
+      this.waitResponse = true;
+      Loader.fullPage();
+      let request = await this.$store.dispatch("products/hideCategory",id);
+      console.log(request);
+      if (request.success) {
+        this.$awn.success('Categoria Ocultada Exitosamente',{labels:{success:'CORRECTO'}});
+        this.refreshData();
+        $('#categoriesModal').modal('hide');
+        this.$emit('refresh');
+      }else {
+        this.$awn.alert('Error en el servidor');
+      }
+      this.waitResponse = false;
+      Loader.hide();
+    },
+    async showCategory(id){
+      this.waitResponse = true;
+      Loader.fullPage();
+      let request = await this.$store.dispatch("products/showCategory",id);
+      console.log(request);
+      if (request.success) {
+        this.$awn.success('Categoria activada Exitosamente',{labels:{success:'CORRECTO'}});
+        this.refreshData();
+        $('#categoriesModal').modal('hide');
+        this.$emit('refresh');
+      }else {
+        this.$awn.alert('Error en el servidor');
+      }
+      this.waitResponse = false;
+      Loader.hide();
     },
     // async newCategory(){
     //   let fields = ['name'];

@@ -83,3 +83,15 @@ export async function exportProducts(context) {
   const request = await Connection.request('get',url);
   return request;
 }
+
+export async function hideCategory(context, id) {
+  let url = BaseUrl.getUrl('api/local/category/'+id+'/hide');
+  const request = await Connection.request('put',url);
+  return request;
+}
+
+export async function showCategory(context, id) {
+  let url = BaseUrl.getUrl('api/local/category/'+id+'/show');
+  const request = await Connection.request('put',url);
+  return request;
+}

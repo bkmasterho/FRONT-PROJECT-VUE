@@ -46,7 +46,7 @@
           <label for="Category">Categoria</label>
           <select class="form-control" v-model="category" @change="getProducts" :disabled="disableCategory">
             <option :value="null" class="text-capitalize">Todas</option>
-            <option :value="category.id" v-for="category in categories" class="text-capitalize">{{category.name}}</option>
+            <option :value="category.id" v-for="category in categories" v-if="category.status === 0" :key="category.id" class="text-capitalize">{{ category.name }}</option>
           </select>
         </div>
         <div v-if="downloadExcelInstaller"  class="col-lg-2 col-md-4 col-sm-6 col-12 d-flex justify-content-md-end align-items-end">
@@ -73,12 +73,12 @@
       </customTable>
       <!-- lista -->
       <div v-if="!productTable" class="row">
-        <div v-for="(product,index) in products.items" :key="'product-'+index" class="products__col">
-          <card-product
-          :product="product"
-          @edit="selectProduct"
-          @remove="openVerify"
-          />
+        <div v-for="(product, index) in products.items" :key="'product-' + index" class="products__col">
+            <card-product v-if="product.category_status === 0"
+            :product="product"
+            @edit="selectProduct"
+            @remove="openVerify"
+          ></card-product>
         </div>
       </div>
 
