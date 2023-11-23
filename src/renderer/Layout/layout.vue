@@ -312,6 +312,13 @@ export default {
               icon: 'fa-dolly-flatbed'
             });
         };
+
+        menu.push({
+          label: 'Recetas',
+          route:'/inicio/recetas',
+          icon:'fa-book'
+        })
+
         // Modulo de clientes
         if (clients){
             menu.push({

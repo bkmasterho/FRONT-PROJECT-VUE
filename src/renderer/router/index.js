@@ -41,6 +41,10 @@ export default new Router({
           component: require('@/views/products.vue').default
         },
         {
+          path: 'recetas',
+          component: require('@/views/recetas.vue').default
+        },
+        {
           path: 'nueva/venta',
           component: require('@/views/newSell.vue').default
         },
