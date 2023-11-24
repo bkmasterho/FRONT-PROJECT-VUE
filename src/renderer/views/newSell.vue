@@ -463,6 +463,7 @@
 
               //Activar el fondo de la fila
               this.activeRows[index] = !this.activeRows[index];
+              this.focusInput();
               this.$awn.info('Producto establecido para precio al mayor');
             }
           }
