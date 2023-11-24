@@ -77,7 +77,7 @@
                       autofocus
                        @change="calculatePlus(index, product, true)"
                        v-model="product.price" name="unitary" min="1"
-                       @keydown.capture.f10="handleF10Key($event,index)"
+                       @keydown.capture="keydownEvent($event,index)"
                      />
                    </td>
                    
@@ -85,14 +85,14 @@
                      <td class=" " v-if="cantidadDecimalesSubModules" :class="{ 'bgVentaMayorClass': activeRows[index] }">
                        <input class="Jinput-border-none btn shadow-icon "  type="number" :id="product.id"
                        @keypress="isFloat($event)"
-                       @keydown.capture.f10="handleF10Key($event,index)"
+                       @keydown.capture="keydownEvent($event,index)"
                        @change="calculatePlus(index, product, (priceUnitaryInstalled && priceUnitary)?true:false)" v-model="product.quantity" name="quantity" min="1">
                      </td>
  
                      <td class="" v-else  :class="{ 'bgVentaMayorClass': activeRows[index] }">
                        <input class="Jinput-border-none btn shadow-icon  " type="number" :id="product.id"
                        @keypress="isInteger($event)"
-                       @keydown.capture.f10="handleF10Key($event,index)"
+                       @keydown.capture="keydownEvent($event,index)"
                        @change="calculatePlus(index, product, (priceUnitaryInstalled && priceUnitary)?true:false)" v-model="product.quantity" name="quantity" min="1">
                      </td>
  
@@ -429,7 +429,7 @@
    },
  
    methods:{
-      handleF10Key(event,index) {
+      keydownEvent(event,index) {
         if (event.key === 'F10') {
           //Obtenemos ID del elemento resaltado = Input de precio con el foco
           let id = event.target.id;
@@ -468,6 +468,9 @@
             }
           }
           
+        }
+        if(event.key === "Enter"){
+          this.focusInput();
         }
       },
       focusInput(){
