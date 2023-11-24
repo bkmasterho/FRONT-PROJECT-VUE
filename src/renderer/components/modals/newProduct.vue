@@ -68,12 +68,20 @@
             <input id="min_quantity" type="text" class="form-control" placeholder="Cantidad Minima" :disabled="waitResponse"
             v-model="min_quantity" @keyup.enter="newProduct">
           </div>
-          <div class="form-group col-md-6 col-12" v-if="categoriesInstalled">
+          <div class="form-group col-12" v-if="categoriesInstalled">
             <label for="category">Categoria</label>
             <select id="category" class="browser-default custom-select" v-model="category" >
               <option value="" selected disabled>Categoria</option>
               <option :value="category.id" v-for="category in categories" class="text-capitalize">{{category.name}}</option>
             </select>
+          </div>
+          <div class="form-group col-md-6 col-12">
+            <label for="priceInput">Precio por mayor</label>
+            <input type="number" class="form-control" placeholder="Precio por mayor"  id="priceMayorInput" maxlength="15"  v-model="mayor" @keypress="pricesCalcToGananciaMayor">
+          </div>
+          <div class="form-group col-md-6 col-12">
+            <label for="priceInput">Ganancia por mayor</label>
+            <input type="number" class="form-control" placeholder="Ganancia por mayor"  id="priceGananciaMayorInput" maxlength="15"  v-model="ganancia_mayor" @keypress="pricesCalcToMayor">
           </div>
         </div>
         <div class="row w-100 px-2">
@@ -202,6 +210,8 @@ export default {
       prices: [],
       ganancia: 0,
       compra:0,
+      mayor:0,
+      ganancia_mayor:0,
       // campos de utilidad
       utilidad:0,
       utilidad_porcentaje:0
@@ -290,6 +300,16 @@ export default {
        setTimeout(() => {
       this.price  = (parseFloat( this.compra) + parseFloat(this.ganancia));
     },1)
+    },
+    pricesCalcToMayor(){
+       setTimeout(() => {
+       this.mayor  = (parseFloat( this.compra) + parseFloat(this.ganancia));
+    },1)
+    },  
+    pricesCalcToGananciaMayor(){
+       setTimeout(() => {
+      this.ganancia_mayor  = (parseFloat( this.mayor) - parseFloat(this.compra));
+    },1)
     },  
     pricesCalcToCompra(){
       setTimeout(() => {
@@ -364,7 +384,7 @@ export default {
     },
     refreshData(product){
       this.$refs.fileProduct.value = '';
-      let fields = ['name','price', 'compra', 'preview','image','id'];
+      let fields = ['name','price', 'compra','mayor', 'ganancia_mayor','preview','image','id'];
       if (this.categoriesInstalled) {
         fields.push('category');
       }
@@ -383,10 +403,13 @@ export default {
       if (this.gananciaInstalled) {
         fields.push('ganancia');
       }
+      if (this.gananciaInstalled) {
+        fields.push('ganancia_mayor');
+      }
 
       for (var field of fields){
         if (product){
-          if ((field == 'price' || field == 'ganancia' || field == 'compra')&& product[field]) {
+          if ((field == 'price' || field == 'ganancia' || field == 'mayor' || field == 'compra' || field == 'ganancia_mayor') && product[field]) {
             this[field] = this.formatNumber(this.deFormatNumber(product[field]));
           }else{
             this[field] = product[field];
@@ -444,6 +467,10 @@ export default {
       }
       if (this.gananciaInstalled && !this.precioVariante ) {
         fields.push('ganancia');
+        fields.push('ganancia_mayor');
+      }
+      if (this.mayor) {
+        fields.push('mayor');
       }
       let fd = new FormData();
       
@@ -489,8 +516,10 @@ export default {
             }
           }
         }
-        if (field == 'price' || field == 'ganancia') {
+        if (field == 'price' || field == 'ganancia' || field == 'mayor' || field == 'ganancia_mayor') {
           console.log('Precio: ', this[field]);
+          console.log('Mayor: ', this[field]);
+          console.log('Ganancia Mayor: ', this[field]);
           console.log('Precio despues: ', this.deFormatNumber(this[field],false));
           fd.append(field, this.deFormatNumber(this[field],false));
         }else{

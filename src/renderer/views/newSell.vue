@@ -29,7 +29,7 @@
          
            <div class="col-12 scroll-h  fondo-table">
             
-             <table class="m-0 table table-striped  table-sm">
+             <table class="m-0 table table-striped  table-sm table-hover">
                
                <!-- m-0 table table-striped table-bordered table-sm w-100 -->
                <thead class="table-colour">
@@ -58,42 +58,45 @@
                <tbody v-if="productoSend.length != 0">
                  <tr class="Jtable-tr table-light" v-for="(product,index) in productoSend" :key="index">
                    
-                   <td class="py-3 px-1 text-center ">
+                   <td class="py-3 px-1 text-center " :class="{ 'bgVentaMayorClass': activeRows[index] }">
                      <p class="text-capitalize">
                        {{product.name}}
                      </p>
                    </td>
  
-                   <td class="py-3 px-3 text-center">
+                   <td class="py-3 px-3 text-center" :class="{ 'bgVentaMayorClass': activeRows[index] }">
                      <h6>{{product.stock}}</h6>
                    </td>
  
-                   <td v-if="(priceUnitaryInstalled && priceUnitary)" class="">
+                   <td v-if="(priceUnitaryInstalled && priceUnitary)" class="" :class="{ 'bgVentaMayorClass': activeRows[index] }">
                      <!-- #fere-warp1 -->
                      <input
                        class="Jinput-border-none btn shadow-icon "
                        type="number"
-                       id="unitary"
-           
+                       :id="product.id"
+                      autofocus
                        @change="calculatePlus(index, product, true)"
                        v-model="product.price" name="unitary" min="1"
+                       @keydown.capture.f10="handleF10Key($event,index)"
                      />
                    </td>
                    
  
-                     <td class=" " v-if="cantidadDecimalesSubModules">
-                       <input class="Jinput-border-none btn shadow-icon "  type="number" id="quantity" 
+                     <td class=" " v-if="cantidadDecimalesSubModules" :class="{ 'bgVentaMayorClass': activeRows[index] }">
+                       <input class="Jinput-border-none btn shadow-icon "  type="number" :id="product.id"
                        @keypress="isFloat($event)"
+                       @keydown.capture.f10="handleF10Key($event,index)"
                        @change="calculatePlus(index, product, (priceUnitaryInstalled && priceUnitary)?true:false)" v-model="product.quantity" name="quantity" min="1">
                      </td>
  
-                     <td class="" v-else >
-                       <input class="Jinput-border-none btn shadow-icon  " type="number" id="quantity" 
-                       @keypress="isInteger($event)" 
+                     <td class="" v-else  :class="{ 'bgVentaMayorClass': activeRows[index] }">
+                       <input class="Jinput-border-none btn shadow-icon  " type="number" :id="product.id"
+                       @keypress="isInteger($event)"
+                       @keydown.capture.f10="handleF10Key($event,index)"
                        @change="calculatePlus(index, product, (priceUnitaryInstalled && priceUnitary)?true:false)" v-model="product.quantity" name="quantity" min="1">
                      </td>
  
-                   <td class="py-3 px-3 text-center ">
+                   <td class="py-3 px-3 text-center " :class="{ 'bgVentaMayorClass': activeRows[index] }">
                      <p class=" fs-4">{{formatNumber(product.subtotal)}}$</p>
                    </td>
  
@@ -101,7 +104,7 @@
  
                    
  
-                   <td class=" text-right ">
+                   <td class=" text-right " :class="{ 'bgVentaMayorClass': activeRows[index] }">
                      <a @click="deleteProduct(index)" href="#" class="btn shadow-icon">
                        <i class="fas fa-ban"></i>
                      </a>
@@ -366,6 +369,7 @@
        itemSelect: '',
        productsSelect: [],
        inputElement:'',
+       activeRows: []
      }
    },
  
@@ -425,6 +429,46 @@
    },
  
    methods:{
+      handleF10Key(event,index) {
+        if (event.key === 'F10') {
+          //Obtenemos ID del elemento resaltado = Input de precio con el foco
+          let id = event.target.id;
+          // Buscamos el producto en la lista de productos de la venta
+          let filtradoSend =  this.productoSend.find(producto => producto.id == id);
+          //Buscamos el producto en la lista de productos completa para obtener el precio al mayor
+          let filtradoProducts = this.products.find(producto => producto.id == id);
+
+          //Comprobamos si el producto ya esta establecido para venta al mayor
+          if(filtradoSend.isMayor !== null && filtradoSend.isMayor === true){
+            filtradoSend.price = filtradoProducts.price;
+            filtradoSend.ganancia = filtradoProducts.ganancia;
+            filtradoSend.subtotal = (filtradoSend.price * filtradoSend.quantity);
+            filtradoSend.isMayor = false;
+            this.calculateTotal();
+            this.activeRows[index] = !this.activeRows[index];
+            this.$awn.info('Producto establecido para venta al Detal');
+          }else{
+            //Comprobamos si el producto tiene el precio al mayor guardado
+            if(filtradoProducts.mayor === null){
+              this.$awn.alert('El producto no tiene precio al mayor registrado');
+            }else{
+              //Cambiamos los precios y demas valores
+              filtradoSend.price = filtradoProducts.mayor;
+              filtradoSend.ganancia = filtradoProducts.ganancia_mayor;
+              filtradoSend.subtotal = (filtradoSend.price * filtradoSend.quantity);
+              
+              //Marcamos el producto como venta para comprobar su tipo luego
+              filtradoSend.isMayor = true;
+              this.calculateTotal();
+
+              //Activar el fondo de la fila
+              this.activeRows[index] = !this.activeRows[index];
+              this.$awn.info('Producto establecido para precio al mayor');
+            }
+          }
+          
+        }
+      },
       focusInput(){
         console.log("focus 1 borrar-focus");
         this.inputElement.focus();
@@ -1617,6 +1661,9 @@
    }
    .newPago-hiden{
      display: none;
+   }
+   .bgVentaMayorClass{
+    background-color: #e5eefa;
    }
  </style>
  
