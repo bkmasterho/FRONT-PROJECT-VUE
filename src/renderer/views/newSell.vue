@@ -76,8 +76,9 @@
                        :id="product.id"
                       autofocus
                        @change="calculatePlus(index, product, true)"
-                       v-model="product.price" name="unitary" min="1"
+                       v-model="product.price" name="unitary" :min="product.price"
                        @keydown.capture="keydownEvent($event,index)"
+                       @input="handleInput"
                      />
                    </td>
                    
@@ -429,6 +430,7 @@
    },
  
    methods:{
+    
       keydownEvent(event,index) {
         if (event.key === 'F10') {
           //Obtenemos ID del elemento resaltado = Input de precio con el foco
@@ -472,6 +474,9 @@
         if(event.key === "Enter"){
           this.focusInput();
         }
+      },
+      handleInput(event) {
+
       },
       focusInput(){
         console.log("focus 1 borrar-focus");
