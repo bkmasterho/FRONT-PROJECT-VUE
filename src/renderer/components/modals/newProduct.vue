@@ -9,22 +9,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <!-- <div v-if="preview" class="d-flex flex-column align-items-center py-4">
-          <img class="img-fluid" style="width: 150px; height:150px;" :src="preview">
-        </div> -->
-        <div class="d-flex flex-column align-items-center py-4">
-          <label for="avatar">
-            <img :src='(preview)?preview:getImage("productDefault")' class="img-lg-custom">
-            <div class="img-user-edit img-lg-custom"></div>
-            <input type="file" id="avatar" ref="fileProduct" accept="image/x-png,image/gif,image/jpeg" style="display:none" @change="uploadFile">
-          </label>
-        </div>
-        <!-- <div class="form-group w-100">
-          <div class="custom-file">
-            <input type="file" class="custom-file-input" @change="uploadFile" id="avatar" accept="image/*" ref="fileProduct">
-            <label class="custom-file-label" for="avatar">Imagen</label>
-          </div>
-        </div> -->
+
         <div class="d-flex flex-wrap row">
           <div class="form-group col-12">
             <label for="name">Nombre</label>
@@ -32,41 +17,42 @@
             v-model="name" @keyup.enter="newProduct">
           </div>
           <div><hr></div>
-  
-          <div class="form-group col-md-6 col-12"  >
-            <label for="priceInput">Precio de compra</label>
-            <input type="text" class="form-control" :class="{ 'invalid-input': submitted && !isValidCompra}" id="priceInput" maxlength="15"  v-model="compra"  @keypress="pricesCalcToCompra">
-          </div>
-
-          <div class="form-group col-md-6 col-12" v-if="(!precioVariante && gananciaInstalled)">
-            <label for="ganancia">Ganancia del Producto</label>
-            <input id="ganancia" type="text" class="form-control" placeholder="ganancia" :disabled="waitResponse" :class="{ 'invalid-input': submitted && !isValidGanancia }"
-            v-model="ganancia" @keyup.enter="newProduct" maxlength="15" v-if="(!precioVariante && gananciaInstalled)" @keypress="pricesCalcToGanacia">
-          </div>
-
-          <div class="form-group  col-12" v-if="!precioVariante" >
-            <label for="priceInput">Precio de Venta</label>
-            <input type="text" class="form-control" placeholder="Precio" :disabled="waitResponse" :class="{ 'invalid-input': submitted && !isValidPrice}"
-            v-model="price" @keyup.enter="newProduct" id="priceInput" maxlength="15" v-if="!precioVariante" @keypress="pricesCalcToPrice">
-          </div>
-          <div><hr></div>
-
-
-
-          <div class="form-group col-md-6 col-12" v-if="barcodeInstalled">
+          <div class="form-group col-12" v-if="barcodeInstalled">
             <label for="barcode">Codigo de Barras</label>
             <input id="barcode" type="text" class="form-control" placeholder="Codigo de Barras" :disabled="waitResponse" :class="{ 'invalid-input': submitted && !isValidBarcode}"
             v-model="barcode" @keyup.enter="newProduct">
           </div>
-          <div class="form-group col-md-6 col-12" v-if="stockInstalled && productsStockModify">
-            <label for="barcode">Stock</label>
-            <input id="stock" type="text" class="form-control" placeholder="Stock" :disabled="waitResponse" :class="{ 'invalid-input': submitted && !isValidStock}"
-            v-model="stock" @keyup.enter="newProduct">
+          <div class="form-group  col-12" v-if="!precioVariante" >
+            <label for="priceInput">Precio de Venta</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">$</span>
+              <input type="number" class="form-control" placeholder="Precio" :disabled="waitResponse" :class="{ 'invalid-input': submitted && !isValidPrice}"
+              v-model="price" @keyup.enter="newProduct" id="priceInput" maxlength="15" v-if="!precioVariante" @keypress="pricesCalcToPrice">
+            </div>
+           
           </div>
-          <div class="form-group col-md-6 col-12" v-if="minQuantityInstalled">
-            <label for="min_quantity">Cantidad Minima</label>
-            <input id="min_quantity" type="text" class="form-control" placeholder="Cantidad Minima" :disabled="waitResponse"
-            v-model="min_quantity" @keyup.enter="newProduct">
+          <div class="form-group col-md-6 col-12"  >
+            <label for="priceInput">Precio de compra</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">$</span>
+              <input type="number" class="form-control" :class="{ 'invalid-input': submitted && !isValidCompra}" id="priceInput" maxlength="15"  v-model="compra"  @keypress="pricesCalcToCompra">
+            </div>
+          </div>
+          <div class="form-group col-md-6 col-12" v-if="(!precioVariante && gananciaInstalled)">
+            <label for="ganancia">Ganancia del Producto</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">$</span>
+              <input id="ganancia" type="number" class="form-control" placeholder="ganancia" :disabled="waitResponse" :class="{ 'invalid-input': submitted && !isValidGanancia }"
+              v-model="ganancia" @keyup.enter="newProduct" maxlength="15" v-if="(!precioVariante && gananciaInstalled)" @keypress="pricesCalcToGanacia">
+            </div>
+          </div>
+
+          <div><hr></div>
+
+          <div class="form-group col-12" v-if="stockInstalled && productsStockModify">
+            <label for="barcode">Stock</label>
+            <input id="stock" type="number" class="form-control" placeholder="Stock" :disabled="waitResponse" :class="{ 'invalid-input': submitted && !isValidStock}"
+            v-model="stock" @keyup.enter="newProduct">
           </div>
           <div class="form-group col-12" v-if="categoriesInstalled">
             <label for="category">Categoria</label>
@@ -75,15 +61,27 @@
               <option :value="category.id" v-for="category in categories" class="text-capitalize">{{category.name}}</option>
             </select>
           </div>
+          <div class="form-group col-md-6 col-12" v-if="minQuantityInstalled">
+            <label for="min_quantity">Cantidad Minima</label>
+            <input id="min_quantity" type="text" class="form-control" placeholder="Cantidad Minima" :disabled="waitResponse"
+            v-model="min_quantity" @keyup.enter="newProduct">
+          </div>
+          
           <div class="form-group col-md-6 col-12">
             <label for="priceInput">Precio por mayor</label>
-            <input type="number" class="form-control" placeholder="Precio por mayor"  id="priceMayorInput" maxlength="15"  v-model="mayor" :class="{ 'invalid-input': submitted && !isValidMayor}"
-            @keypress="pricesCalcToGananciaMayor">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">$</span>
+              <input type="number" class="form-control" placeholder="Precio por mayor"  id="priceMayorInput" maxlength="15"  v-model="mayor" :class="{ 'invalid-input': submitted && !isValidMayor}"
+              @keypress="pricesCalcToGananciaMayor">
+            </div>
           </div>
           <div class="form-group col-md-6 col-12">
             <label for="priceInput">Ganancia por mayor</label>
-            <input type="number" class="form-control" placeholder="Ganancia por mayor"  id="priceGananciaMayorInput" maxlength="15"  v-model="ganancia_mayor" :class="{ 'invalid-input': submitted && !isValidGananciaMayor}"
-            @keypress="pricesCalcToMayor">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">$</span>
+              <input type="number" class="form-control" placeholder="Ganancia por mayor"  id="priceGananciaMayorInput" maxlength="15"  v-model="ganancia_mayor" :class="{ 'invalid-input': submitted && !isValidGananciaMayor}"
+              @keypress="pricesCalcToMayor">
+            </div>
           </div>
         </div>
         <div class="row w-100 px-2">
@@ -159,16 +157,6 @@
               </tr>
             </tbody>
           </table>
-          <!-- <ul class="list-group list-group-unbordered mb-t col-12">
-            <li v-for="(price,k) in prices" :key="k" class="list-group-item px-2">
-              <span>{{price.cantidad}} Unidades - ${{price.precio}}</span>
-              <a class="float-right" @click="removePrice(k)">
-                <button type="button" class="btn btn-tool p-1">
-                  <i class="float-button fas fa-times-circle text-danger"></i>
-                </button>
-              </a>
-            </li>
-          </ul> -->
         </div>
       </div>
       <div class="modal-footer">
@@ -667,5 +655,14 @@ export default {
 }
 .invalid-input{
   border-color: red;
+}
+.form-control{
+  background-color: #ffffff;
+  border-radius: 5px;
+  border-radius: 5px;
+  box-shadow: inset -1px 1px 20px 11px rgb(193 193 193 / 28%);
+      /* border: 1px solid #ced4da; */
+    /* border-radius: 0.25rem; */
+    /* border: none; */
 }
 </style>
