@@ -431,7 +431,7 @@ export default {
       this.$emit('closeEdit');
     },
     refreshData(product){
-      this.$refs.fileProduct.value = '';
+      // this.$refs.fileProduct.value = '';
       let fields = ['name','price', 'compra','mayor', 'ganancia_mayor','preview','image','id'];
       if (this.categoriesInstalled) {
         fields.push('category');
@@ -593,7 +593,7 @@ export default {
         }
 
         Loader.hide();
-        this.$refs.fileProduct.value = '';
+        // this.$refs.fileProduct.value = '';
         if (request.success) {
           if (this.edit){
             this.$awn.success('Producto Editado Exitosamente',{labels:{success:'CORRECTO'}});
