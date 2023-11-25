@@ -949,40 +949,32 @@
         //     if(mounted) this.$refs.productAutocomplete.$refs.input.focus();
      },
      search(input) {
-       //console.log('SEARCH EXECUTES');
-       console.log('search input', input);
- 
-       // Ahorramos la primera busqueda
-       if (input == null || input == '') return [];
-       // Ahorramos una busqueda cuando sea menor que 1
-       if (input.length < 1) return [];
- 
-       clearTimeout(this.timeoutT2);
-       this.timeoutT2 = setTimeout(() => {
-         // Establecemos la busqueda en segundo plano
-         this.productSearch = input;
-       }, 1500);
- 
-       const inputLower = input.toLowerCase();
-       const maxProductFindLength = 100;
- 
-       const productsFind = this.products.filter(product => {
-         if (product.cecina == true) return false;
- 
-         var index = 0;
-         const productNameLower = product.name.toLowerCase();
-         for (var i = 0; i < productNameLower.length; i++) {
-           if (productNameLower.startsWith(inputLower, i)) {
-             index = i;
-             break;
-           };
-         }
- 
-         return productNameLower.startsWith(inputLower, index);
-       });
- 
-       return productsFind.splice(0, maxProductFindLength);
-     },
+      console.log('search input', input);
+
+      if (input == null || input == '' || input.length < 3) {
+        clearTimeout(this.timeoutT2);
+        this.productSearch = '';
+        return [];
+      }
+
+      clearTimeout(this.timeoutT2);
+      this.timeoutT2 = setTimeout(() => {
+        this.productSearch = input;
+      }, 500);
+
+      const inputLower = input.toLowerCase();
+      const maxProductFindLength = 100;
+
+      const productsFind = this.products.filter(product => {
+        if (product.cecina == true) return false;
+
+        const productNameLower = product.name.toLowerCase();
+        const startIndex = productNameLower.indexOf(inputLower);
+        return startIndex !== -1 && startIndex <= 2; // Limitar la búsqueda a los primeros 3 caracteres
+      });
+
+      return productsFind.slice(0, maxProductFindLength);
+    },
  
      getSearchValue(result) {
        console.log("Llamando getSearchhh", result);
@@ -1374,63 +1366,75 @@
      waiters:{ get(){ return this.$store.getters['waiters/getAllWaiters'] } },
 
      filteredList: {
-       get(){
-         clearTimeout(this.timeoutT);
- 
-         const lowerCaseProductSearch = this.productSearch.toLowerCase();
-         const _this = this;
-         // Bsucador de codigo de barras y abridor de ordenes directo
-         this.timeoutT = setTimeout(function () {
-           var findProduct = (_this.products) ? _this.products.find(element => element.barcode == _this.productSearch) : null;
- 
-           // 12 es creo el numero de serial de un ticket o algo asi
-           if (_this.productSearch.length == 12 && findProduct == undefined) _this.getSell(_this.productSearch);
- 
-           if (findProduct) {
-            if(_this.product_modal_init){
-              _this.product_counter = 1;
-              _this.product_name = findProduct.name;
-              _this.product_modal = findProduct;
+      get() {
+        clearTimeout(this.timeoutT);
+
+        const lowerCaseProductSearch = this.productSearch.toLowerCase();
+        const filteredProducts = [];
+
+        this.timeoutT = setTimeout(() => {
+          const findProduct = this.products.find(element => element.barcode == this.productSearch);
+
+          if (this.productSearch.length == 12 && !findProduct) {
+            this.getSell(this.productSearch);
+          }
+
+          if (findProduct) {
+            if (this.product_modal_init) {
+              this.product_counter = 1;
+              this.product_name = findProduct.name;
+              this.product_modal = findProduct;
               $('#modalProductAdd').modal('show');
-              console.log("focus 14 borrar-focus");
-              setTimeout(() => {_this.$refs.counter_product.focus();}, 500);
+              setTimeout(() => { this.$refs.counter_product.focus(); }, 50);
               return;
             }
-             _this.quantityAdd({
-               id: findProduct.id,
-               name: findProduct.name,
-               price: findProduct.price,
-               quantity: parseInt(1),
-               prices: findProduct.prices,
-               cecina: (findProduct.cecina)?true:false,
-               stock: findProduct.stock
-             });
-             _this.productSearch = '';
-             _this.$refs.productAutocomplete.setValue('');
-           }
- 
-           if (findProduct == undefined && _this.filteredList.length == 0){
-             _this.productSearch = '';
-             _this.$refs.productAutocomplete.setValue('');
-             _this.$awn.info('Sin resultados');
-           }
- 
-         }, 50);
- 
-         const filterFields = this.filters;
- 
-         return this.products.filter(product => {
-           for (const filter of filterFields) {
-             console.log('Esta buscando por, ',filter,' -> ',product[filter]);
-             if (product[filter]) {
-               const response = product[filter].toLowerCase().includes(lowerCaseProductSearch);
-               if (response) return response;
-             }
-           }
-           return false;
-         });
-       }
-     },
+            this.quantityAdd({
+              id: findProduct.id,
+              name: findProduct.name,
+              price: findProduct.price,
+              quantity: parseInt(1),
+              prices: findProduct.prices,
+              cecina: findProduct.cecina ? true : false,
+              stock: findProduct.stock
+            });
+            this.productSearch = '';
+            this.$refs.productAutocomplete.setValue('');
+          }
+
+          if (!findProduct && filteredProducts.length === 0) {
+            this.productSearch = '';
+            this.$refs.productAutocomplete.setValue('');
+            this.$awn.info('Sin resultados');
+          }
+        }, 50);
+
+    const filterFields = this.filters;
+    const filterFieldsLength = filterFields.length;
+    const productsLength = this.products.length;
+
+    for (let i = 0; i < productsLength; i++) {
+      const product = this.products[i];
+      let found = false;
+
+      for (let j = 0; j < filterFieldsLength; j++) {
+        const filter = filterFields[j];
+        const fieldValue = product[filter];
+
+        if (fieldValue && fieldValue.toLowerCase().includes(lowerCaseProductSearch)) {
+          filteredProducts.push(product);
+          found = true;
+          break;
+        }
+      }
+
+      if (found) {
+        break;
+      }
+    }
+
+    return filteredProducts;
+  },
+},
 
      productsIsDefined: {
        get(){ return this.products; }
