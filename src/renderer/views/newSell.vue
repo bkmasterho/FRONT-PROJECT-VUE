@@ -991,18 +991,23 @@
         //setTimeout(() => {this.$refs.counter_product.focus();}, 500);
         return;
       }
-        this.quantityAdd({
-          id: result.id,
-          name: result.name,
-          price: result.price,
-          quantity: parseInt(this.product_counter),
-          prices: result.prices,
-          cecina: (result.cecina)?true:false,
-          stock: result.stock
-        });
-          if (result.stock <= 10) {
-            if (result.stock != null) this.$awn.alert("Stock critico de "+result.name+", quedan "+result.stock)
+          if(result.stock > 0){
+            if (result.stock <= 10) {
+              if (result.stock != null) this.$awn.alert("Stock critico de "+result.name+", quedan "+result.stock)
+              this.quantityAdd({
+                id: result.id,
+                name: result.name,
+                price: result.price,
+                quantity: parseInt(this.product_counter),
+                prices: result.prices,
+                cecina: (result.cecina)?true:false,
+                stock: result.stock
+              });
+            }
+          }else{
+            this.$awn.alert("Producto "+result.name+", sin stock ");
           }
+          
         this.$refs.productAutocomplete.setValue('');
      },
      //agregar productos a tabla
