@@ -451,7 +451,7 @@
             this.$awn.info('Producto establecido para venta al Detal');
           }else{
             //Comprobamos si el producto tiene el precio al mayor guardado
-            if(filtradoProducts.mayor === null){
+            if(filtradoProducts.mayor === null || filtradoProducts.mayor == 0){
               this.$awn.alert('El producto no tiene precio al mayor registrado');
             }else{
               //Cambiamos los precios y demas valores
