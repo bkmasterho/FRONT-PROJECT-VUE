@@ -299,7 +299,8 @@ export default {
       this.isValidGananciaMayor){
         return true
       }else{
-        return false;
+        return true; //VALIDACIONES DESACTIVADAS
+        // return false; 
       }
     },
     utilidad_porCantidad() {
@@ -450,8 +451,6 @@ export default {
       }
       if (this.gananciaInstalled) {
         fields.push('ganancia');
-      }
-      if (this.gananciaInstalled) {
         fields.push('ganancia_mayor');
       }
 
