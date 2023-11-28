@@ -68,7 +68,8 @@
                      <h6>{{product.stock}}</h6>
                    </td>
  
-                   <td v-if="(priceUnitaryInstalled && priceUnitary)" class="" :class="{ 'bgVentaMayorClass': activeRows[index] }">
+                   <!-- <td v-if="(priceUnitaryInstalled && priceUnitary)" class="" :class="{ 'bgVentaMayorClass': activeRows[index] }"> -->
+                    <td class="" :class="{ 'bgVentaMayorClass': activeRows[index] }">
                      <!-- #fere-warp1 -->
                      <input
                        class="Jinput-border-none btn shadow-icon "
@@ -1006,6 +1007,7 @@
             }
           }else{
             this.$awn.alert("Producto "+result.name+", sin stock ");
+            this.$refs.productAutocomplete.setValue('');
           }
           
         this.$refs.productAutocomplete.setValue('');
@@ -1032,6 +1034,7 @@
           }
         }else{
           this.$awn.alert("Producto "+result.name+", sin stock ");
+          this.$refs.productAutocomplete.setValue('');
         }
           
         this.$refs.productAutocomplete.setValue('');
@@ -1413,6 +1416,7 @@
                 this.$refs.productAutocomplete.setValue('');
             }else{
               this.$awn.info('Producto, ' + findProduct.name+ ' sin stock');
+              this.$refs.productAutocomplete.setValue('');
             }
           }
 
