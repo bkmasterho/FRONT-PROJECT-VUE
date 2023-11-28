@@ -8,6 +8,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <span class="ml-4">Ahora las categorias se pueden ocultar</span>
       <div class="modal-body">
         <div class="d-flex flex-column px-2">
           <h6 class="font-weight-bold">Lista de Categorias</h6>
@@ -21,11 +22,11 @@
                 <button type="button" class="btn bg-danger text-white px-1 py-1 text-sm q-btn-sm" :disabled="waitResponse" @click="deleteCategory(category.id)">
                   <i class="fa fa-trash"></i>
                 </button>
-                <button v-if="category.status == 1" type="button" class="btn bg-dark text-white px-1 py-1 text-sm q-btn-sm" :disabled="waitResponse" @click="showCategory(category.id)">
-                  <i class="fa fa-eye"></i>
+                <button v-if="category.status == 1" type="button" class="btn bg-light text-black px-1 py-1 text-sm q-btn-sm" :disabled="waitResponse" @click="showCategory(category.id)">
+                  <i class="far fa-square"></i>
                 </button>
-                <button v-else type="button" class="btn bg-dark text-white px-1 py-1 text-sm q-btn-sm" :disabled="waitResponse" @click="hideCategory(category.id)">
-                  <i class="fa fa-eye-slash"></i>
+                <button v-else type="button" class="btn bg-light px-1 py-1 text-sm q-btn-sm" :disabled="waitResponse" @click="hideCategory(category.id)">
+                  <i class="far fa-check-square" style="color: #6ccff6;"></i>
                 </button>
               </div>
             </li>
